@@ -18,6 +18,12 @@ def main_foo(x):
     bitumen = 0
     fertilizers = 0
     seeds = 0
+    pipes = 0
+
+    pipe = pd.read_excel(r'справочник массы.xlsx', sheet_name='pipe')
+    piperpov = []
+    for i in range(pipe.shape[0]):
+        piperpov.append(pipe['code'][i])
 
     for i in range(df.shape[0]):
         """Расчет электродов"""
@@ -48,18 +54,29 @@ def main_foo(x):
             elif str(df['unit'][i]).lower() == 'т':
                 fertilizers += df['amount'][i]
 
-        """Расчет битумных"""
+        """Расчет битумных (НЕ ГОТОВО)"""
         if str(df['name'][i]).lower().find('лак битумн') == 0:
             if str(df['unit'][i]).lower() == 'кг':
                 bitumen += df['amount'][i]/1000
             elif str(df['unit'][i]).lower() == 'т':
                 bitumen += df['amount'][i]
 
+        """Расчет труб стальных"""
+        if str(df['code'][i]) in piperpov:
+            for j in range(pipe.shape[0]):
+                if str(df['code'][i]) == pipe['code'][j]:
+                    if str(df['unit'][i].lower()) == 'м':
+                        pipes += df['amount'][i]/1000 * pipe['ex'][j]
+                    elif str(df['unit'][i].lower()) == '1000 м':
+                        pipes += df['amount'][i] * pipe['ex'][j]
+
     electrodes = round(electrodes, 3)
     seeds = round(seeds, 3)
     fertilizers = round(fertilizers, 3)
+    pipes = round(pipes, 3)
     message = f"Масса электродов: {electrodes} т\n" \
               f"Масса семян: {seeds} т\n" \
-              f"Масса удорбрений: {fertilizers} т"
+              f"Масса удорбрений: {fertilizers} т\n" \
+              f"Масса стальных труб: {pipes} т"
 
     return message
