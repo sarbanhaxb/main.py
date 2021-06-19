@@ -5,10 +5,10 @@ from writter import new_WB
 
 """Разбирает ресурсную ведомость построчно, возвращает количество материалов"""
 
-def lol(x):
+def main_foo(x):
     book = xlrd.open_workbook(x)
     sh = book.sheet_by_index(0)
-    num_of_slice = num(sh)
+    num_of_slice = num(sh) #вызывает функцию из файла num.py для получения строк среза
     new_WB(num_of_slice, sh)
 
     df = pd.read_excel('use.xlsx')
@@ -20,36 +20,46 @@ def lol(x):
     seeds = 0
 
     for i in range(df.shape[0]):
+        """Расчет электродов"""
         if str(df['name'][i]).lower().find('электрод') == 0:
             if str(df['unit'][i]).lower() == 'кг':
                 electrodes += df['amount'][i]/1000
             elif str(df['unit'][i]).lower() == 'т':
                 electrodes += df['amount'][i]
+
+        """Расчет ЛКМ"""
         if str(df['name'][i]).lower().find('краска') == 0 or str(df['name'][i]).lower().find('композиция') == 0:
             if str(df['unit'][i]).lower() == 'кг':
                 paintwork += df['amount'][i]/1000
             elif str(df['unit'][i]).lower() == 'т':
                 paintwork += df['amount'][i]
+
+        """Расчет семян"""
         if str(df['name'][i]).lower().find('семена') == 0:
             if str(df['unit'][i]).lower() == 'кг':
                 seeds += df['amount'][i]/1000
             elif str(df['unit'][i]).lower() == 'т':
                 seeds += df['amount'][i]
+
+        """Расчет удобрений"""
         if str(df['name'][i]).lower().find('удобрен') == 0:
             if str(df['unit'][i]).lower() == 'кг':
                 fertilizers += df['amount'][i]/1000
             elif str(df['unit'][i]).lower() == 'т':
                 fertilizers += df['amount'][i]
+
+        """Расчет битумных"""
         if str(df['name'][i]).lower().find('лак битумн') == 0:
             if str(df['unit'][i]).lower() == 'кг':
                 bitumen += df['amount'][i]/1000
             elif str(df['unit'][i]).lower() == 'т':
                 bitumen += df['amount'][i]
 
-    #print("Количество электродов:", round(electrodes, 3), 'тонн')
-    #print('Количество ЛКМ:', round(paintwork, 3), 'тонн')
-    #print('Семена:', round(seeds, 3), 'тонн')
-    #print('Удобрения:', round(fertilizers, 3), 'тонн')
-    #print('Битум:', round(bitumen, 3), 'тонн')
+    electrodes = round(electrodes, 3)
+    seeds = round(seeds, 3)
+    fertilizers = round(fertilizers, 3)
+    message = f"Масса электродов: {electrodes} т\n" \
+              f"Масса семян: {seeds} т\n" \
+              f"Масса удорбрений: {fertilizers} т"
 
-    return electrodes
+    return message
