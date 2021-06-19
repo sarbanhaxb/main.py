@@ -62,6 +62,9 @@ def main_foo(x):
                 bitumen += df['amount'][i]
 
         """Расчет труб стальных"""
+        """Необходимо предусмотреть расчет если трубы в тоннах или килограммах"""
+
+
         if str(df['code'][i]) in piperpov:
             for j in range(pipe.shape[0]):
                 if str(df['code'][i]) == pipe['code'][j]:
