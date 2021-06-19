@@ -38,7 +38,7 @@ class Resource_sheet(QMainWindow):
                                 color: white;
                             }
                             """
-                              )
+            )
         fileMenu = menubar.addMenu('&Файл')
         fileMenu.setStyleSheet('font-family: arial; font-size: 11pt')
         fileMenu.setObjectName('filest')
